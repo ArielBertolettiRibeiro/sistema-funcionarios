@@ -3,7 +3,6 @@ package com.empresa.funcionarios.domain.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -27,7 +26,7 @@ public class Funcionario {
     private BigDecimal salario;
 
     @Column(name = "data_emissao", nullable = false)
-    private LocalDate dataEmissao; //Não pode ser futura
+    private LocalDate dataEmissao;
 
     public Funcionario(String nome, String cargo, BigDecimal salario, LocalDate dataEmissao) {
         this.nome = nome;

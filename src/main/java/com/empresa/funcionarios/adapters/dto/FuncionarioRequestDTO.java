@@ -1,17 +1,16 @@
-package com.empresa.funcionarios.application.dto;
+package com.empresa.funcionarios.adapters.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class FuncionarioDTO {
+public class FuncionarioRequestDTO {
 
     @NotBlank(message = "O nome do funcionário é obrigatorio!")
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres!")
@@ -27,7 +26,7 @@ public class FuncionarioDTO {
     @Positive(message = "O salário deve ser maior que zero!")
     private BigDecimal salario;
 
-    @NotNull(message = "A data de emissãoé obrigatória!")
+    @NotNull(message = "A data de emissão é obrigatória!")
     @PastOrPresent(message = "A data me emissão não pode ser futura!")
     private LocalDate dataEmissao;
 }

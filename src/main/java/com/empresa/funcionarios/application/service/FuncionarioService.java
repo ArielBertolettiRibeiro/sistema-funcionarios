@@ -1,62 +1,61 @@
 package com.empresa.funcionarios.application.service;
 
-import com.empresa.funcionarios.application.configurations.ModelMapperConfig;
-import com.empresa.funcionarios.application.dto.FuncionarioDTO;
-import com.empresa.funcionarios.application.dto.FuncionarioReturnDTO;
+import com.empresa.funcionarios.infrastructure.config.mapper.FuncionarioMapper;
+import com.empresa.funcionarios.adapters.dto.FuncionarioRequestDTO;
+import com.empresa.funcionarios.adapters.dto.FuncionarioResponseDTO;
 import com.empresa.funcionarios.domain.entities.Funcionario;
-import com.empresa.funcionarios.domain.exception.FuncionarioNotFoundException;
+import com.empresa.funcionarios.application.exception.FuncionarioNotFoundException;
 import com.empresa.funcionarios.infrastructure.repository.FuncionarioRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class FuncionarioService {
 
-    private ModelMapperConfig modelMapperConfig;
-    private FuncionarioRepository funcionarioRepository;
+    private final FuncionarioMapper mapper;
+    private final FuncionarioRepository repository;
 
-    public FuncionarioService(FuncionarioRepository funcionarioRepository, ModelMapperConfig modelMapperConfig) {
-        this.funcionarioRepository = funcionarioRepository;
-        this.modelMapperConfig = modelMapperConfig;
+    @Transactional
+    public FuncionarioResponseDTO created(FuncionarioRequestDTO request) {
+        return mapper.toResponse(repository.save(mapper.toEntity(request)));
     }
 
-    public FuncionarioReturnDTO created(FuncionarioDTO funcionarioDTO) {
-        Funcionario funcionario = modelMapperConfig.toEntity(funcionarioDTO);
-        Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
-
-        return modelMapperConfig.toReturnDTO(funcionarioSalvo);
+    @Transactional(readOnly = true)
+    public Page<FuncionarioResponseDTO> findAll(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(mapper::toResponse);
     }
 
-    public List<FuncionarioReturnDTO> findAll() {
-        List<Funcionario> funcionarios = funcionarioRepository.findAll();
-        return modelMapperConfig.toReturnDTOList(funcionarios);
-    }
-
-    public FuncionarioReturnDTO findById(Long id) {
-        Funcionario funcionario = funcionarioRepository.findById(id)
+    @Transactional(readOnly = true)
+    public FuncionarioResponseDTO findById(Long id) {
+        Funcionario funcionario = repository.findById(id)
                 .orElseThrow(() -> new FuncionarioNotFoundException("Funcionário não encontrado!"));
-        return modelMapperConfig.toReturnDTO(funcionario);
+
+        return mapper.toResponse(funcionario);
     }
 
-    public FuncionarioReturnDTO update(Long id, FuncionarioDTO funcionarioDTO) {
-        Funcionario funcionario = funcionarioRepository.findById(id)
+    @Transactional
+    public FuncionarioResponseDTO update(Long id, FuncionarioRequestDTO funcionarioDTO) {
+        Funcionario funcionario = repository.findById(id)
                 .orElseThrow(() -> new FuncionarioNotFoundException("Funcionário não encontrado"));
 
-        modelMapperConfig.toEntity(funcionarioDTO);
+        mapper.toEntity(funcionarioDTO);
         funcionario.setNome(funcionarioDTO.getNome());
         funcionario.setCargo(funcionarioDTO.getCargo());
         funcionario.setSalario(funcionarioDTO.getSalario());
 
-        Funcionario atualizado = funcionarioRepository.save(funcionario);
-        return modelMapperConfig.toReturnDTO(atualizado);
+        return mapper.toResponse(repository.save(funcionario));
     }
 
+    @Transactional
     public void delet(Long id) {
-        if (!funcionarioRepository.existsById(id)) {
+        if (!repository.existsById(id)) {
             throw new FuncionarioNotFoundException("Funcionário não encontrado!");
         }
-        funcionarioRepository.deleteById(id);
+        repository.deleteById(id);
     }
 }

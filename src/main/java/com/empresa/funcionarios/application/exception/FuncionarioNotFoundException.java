@@ -1,4 +1,4 @@
-package com.empresa.funcionarios.domain.exception;
+package com.empresa.funcionarios.application.exception;
 
 public class FuncionarioNotFoundException extends RuntimeException {
 
