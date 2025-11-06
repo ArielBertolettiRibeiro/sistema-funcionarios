@@ -1,4 +1,4 @@
-package com.empresa.funcionarios.adapters.dto;
+package com.empresa.funcionarios.application.funcionario.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.empresa.funcionarios.adapters.dto;
+package com.empresa.funcionarios.application.funcionario.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

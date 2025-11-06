@@ -1,8 +1,8 @@
-package com.empresa.funcionarios.infrastructure.config.mapper;
+package com.empresa.funcionarios.shared.mapper;
 
-import com.empresa.funcionarios.adapters.dto.FuncionarioRequestDTO;
-import com.empresa.funcionarios.adapters.dto.FuncionarioResponseDTO;
-import com.empresa.funcionarios.domain.entities.Funcionario;
+import com.empresa.funcionarios.application.funcionario.dto.FuncionarioRequestDTO;
+import com.empresa.funcionarios.application.funcionario.dto.FuncionarioResponseDTO;
+import com.empresa.funcionarios.domain.model.Funcionario;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
