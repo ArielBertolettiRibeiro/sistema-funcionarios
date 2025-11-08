@@ -1,4 +1,4 @@
-package com.empresa.funcionarios.adapters.advice;
+package com.empresa.funcionarios.presentation.advice;
 
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

@@ -1,57 +1,53 @@
 package com.empresa.funcionarios.domain.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
+import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Entity
-@Table(name = "funcionarios")
 public class Funcionario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
+    private final UUID id;
     private String nome;
-
-    @Column(nullable = false)
     private String cargo;
-
-    @Column(nullable = false)
     private BigDecimal salario;
-
-    @Column(name = "data_emissao", nullable = false)
     private LocalDate dataEmissao;
+    private boolean ativo;
 
-    @Column(nullable = false)
-    private Boolean active;
-
-    public Funcionario(String nome, String cargo, BigDecimal salario, LocalDate dataEmissao) {
-        this.nome = nome;
-        this.cargo = cargo;
+    public Funcionario(UUID id, String nome, String cargo, BigDecimal salario, LocalDate dataEmissao, boolean ativo) {
+        this.id = id;
+        this.nome = Objects.requireNonNull(nome);
+        this.cargo = Objects.requireNonNull(cargo);
         this.salario = salario;
-        this.dataEmissao = dataEmissao;
-    }
-
-    public void atualizarDados(String nome, String cargo, BigDecimal salario) {
-        this.nome = nome;
-        this.cargo = cargo;
-        this.salario = salario;
+        this.dataEmissao = dataEmissao != null ? dataEmissao : LocalDate.now();
+        this.ativo = ativo;
     }
 
     public static Funcionario criar(String nome, String cargo, BigDecimal salario, LocalDate dataEmissao) {
-        if (salario.compareTo(BigDecimal.ZERO) < 0) {
+        return new Funcionario(UUID.randomUUID(), nome, cargo, salario, dataEmissao, true);
+    }
+
+    public void atualizarDados(String nome, String cargo, BigDecimal salario) {
+        validarSalario(salario);
+        this.nome = nome;
+        this.cargo = cargo;
+        this.salario = salario;
+    }
+
+    public void desativar() {
+        this.ativo = false;
+    }
+
+    private void validarSalario(BigDecimal salario) {
+        if (salario == null || salario.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Salário não pode ser negativo.");
         }
-        return new Funcionario(nome, cargo, salario, dataEmissao != null ? dataEmissao : LocalDate.now());
     }
+
+    public UUID getId() { return id; }
+    public String getNome() { return nome; }
+    public String getCargo() { return cargo; }
+    public BigDecimal getSalario() { return salario; }
+    public LocalDate getDataEmissao() { return dataEmissao; }
+    public boolean isAtivo() { return ativo; }
 }

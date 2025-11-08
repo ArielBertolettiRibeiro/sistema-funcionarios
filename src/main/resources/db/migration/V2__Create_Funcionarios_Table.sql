@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS funcionarios (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    cargo VARCHAR(100) NOT NULL,
+    salario NUMERIC(10,2) NOT NULL,
+    data_emissao DATE NOT NULL,
+    ativo BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
