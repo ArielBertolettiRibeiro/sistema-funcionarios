@@ -1,4 +1,4 @@
-package com.empresa.funcionarios.infrastructure.persistence.entity;
+package com.empresa.funcionarios.infrastructure.persistence.funcionario.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

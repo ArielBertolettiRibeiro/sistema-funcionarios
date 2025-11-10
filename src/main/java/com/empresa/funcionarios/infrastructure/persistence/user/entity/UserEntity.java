@@ -1,4 +1,4 @@
-package com.empresa.funcionarios.infrastructure.persistence.entity;
+package com.empresa.funcionarios.infrastructure.persistence.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,7 +29,7 @@ public class UserEntity {
     private String password;
 
     @Column(nullable = false, length = 20)
-    private String role; // USER | ADMIN
+    private String role;
 
     @Column(nullable = false)
     private Boolean active = true;
